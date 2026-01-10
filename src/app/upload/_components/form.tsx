@@ -8,6 +8,8 @@ export default function Upload() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+
   const isZipFile = (file: File) => {
     return (
       file.type === "application/zip" ||
@@ -28,6 +30,11 @@ export default function Upload() {
 
     if (!isZipFile(file)) {
       setError("Invalid file type. Only ZIP files are allowed.");
+      return;
+    }
+
+    if (file.size > MAX_FILE_SIZE) {
+      setError("File size exceeds 100MB limit.");
       return;
     }
 
@@ -69,6 +76,12 @@ export default function Upload() {
     if (!isZipFile(selectedFile)) {
       setFile(null);
       setError("Invalid file type. Please select a ZIP file.");
+      return;
+    }
+
+    if (selectedFile.size > MAX_FILE_SIZE) {
+      setFile(null);
+      setError("File size exceeds 100MB limit.");
       return;
     }
 
