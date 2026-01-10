@@ -13,9 +13,9 @@ export default async function Home() {
   if (!session.username) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div>
       {/* Main content */}
-      <div className="flex flex-col items-center justify-center mt-20 px-4">
+      <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
         <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg text-center">
           <h1 className="text-2xl font-bold mb-6 text-gray-800">
             Welcome, {session.username}!

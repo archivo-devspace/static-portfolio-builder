@@ -24,7 +24,7 @@ export async function POST(req: Request) {
   try {
     // 🔹 Use dynamic folder: server vs local
     const isLocal = process.env.NODE_ENV !== "production";
-    const folderName = `${username}.${process.env.DOMAIN}`;
+    const folderName = `${username}.${process.env.HOST}`;
     const targetDir = isLocal
       ? path.join(process.cwd(), "mock-portfolios-storage", folderName)
       : `/var/www/portfolios/${folderName}`;

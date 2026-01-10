@@ -5,51 +5,110 @@ import { useState } from "react";
 export default function Upload() {
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const isZipFile = (file: File) => {
+    return (
+      file.type === "application/zip" ||
+      file.type === "application/x-zip-compressed" ||
+      file.name.toLowerCase().endsWith(".zip")
+    );
+  };
 
   async function handleUpload(e: React.FormEvent) {
     e.preventDefault();
-    if (!file) return;
+    setError("");
+    setMessage("");
+
+    if (!file) {
+      setError("Please select a ZIP file before uploading.");
+      return;
+    }
+
+    if (!isZipFile(file)) {
+      setError("Invalid file type. Only ZIP files are allowed.");
+      return;
+    }
 
     setLoading(true);
-    setMessage("");
 
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+
       const text = await res.text();
       setMessage(text);
+      setFile(null);
     } catch (err) {
       console.error(err);
-      setMessage("Upload failed.");
+      setError("Upload failed. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const selectedFile = e.target.files?.[0] || null;
+
+    setMessage("");
+    setError("");
+
+    if (!selectedFile) {
+      setFile(null);
+      return;
+    }
+
+    if (!isZipFile(selectedFile)) {
+      setFile(null);
+      setError("Invalid file type. Please select a ZIP file.");
+      return;
+    }
+
+    setFile(selectedFile);
+  }
+
   return (
-    <form onSubmit={handleUpload} className="flex flex-col gap-4">
-      <label className="block text-gray-700 font-medium">
-        Select ZIP file:
+    <form
+      onSubmit={handleUpload}
+      className="max-w-md mx-auto flex flex-col gap-4 bg-white p-6 rounded-lg shadow"
+    >
+      <label className="text-gray-700 font-medium">
+        Select ZIP file <span className="text-red-500">*</span>
       </label>
+
       <input
         type="file"
         accept=".zip"
-        onChange={(e) => setFile(e.target.files?.[0] || null)}
-        className="block w-full text-gray-700 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        onChange={handleFileChange}
+        className={`block w-full rounded px-3 py-2 border focus:outline-none focus:ring-2
+          ${
+            error
+              ? "border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:ring-blue-500"
+          }`}
       />
+
+      {error && <p className="text-sm text-red-500">{error}</p>}
 
       <button
         type="submit"
-        disabled={loading}
-        className="bg-blue-500 cursor-pointer hover:bg-blue-600 text-white font-semibold py-2 rounded transition-colors disabled:opacity-50"
+        disabled={loading || !file}
+        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {loading ? "Uploading..." : "Deploy"}
       </button>
 
-      {message && <p className="text-center text-gray-700 mt-2">{message}</p>}
+      {message && (
+        <p className="text-center text-green-600 font-medium">{message}</p>
+      )}
     </form>
   );
 }
