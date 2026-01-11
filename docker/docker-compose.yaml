@@ -1,0 +1,8 @@
+services:
+  static-portfolio-builder-service:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: static-portfolio-builder:latest
+    ports:
+      - "3300:3000"
