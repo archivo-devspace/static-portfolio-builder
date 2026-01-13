@@ -1,11 +1,36 @@
 services:
-  nextjs:
+  pf-builder:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: docker/Dockerfile
     image: static-portfolio-builder:latest
+
     ports:
       - "3300:3000"
+
+    user: "100:101"
+
+    # Security hardening
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+    tmpfs:
+      - /tmp
+
     volumes:
       - /var/www/portfolios:/var/www/portfolios:rw
+
+    env_file:
+      - ../.env.${ENV:-local}
+   
     restart: unless-stopped
+
+    # Optional: resource limits to prevent abuse
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
