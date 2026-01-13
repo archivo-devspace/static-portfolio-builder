@@ -1,8 +1,11 @@
 services:
-  static-portfolio-builder-service:
+  nextjs:
     build:
-      context: ../
-      dockerfile: docker/Dockerfile
+      context: .
+      dockerfile: Dockerfile
     image: static-portfolio-builder:latest
     ports:
       - "3300:3000"
+    volumes:
+      - /var/www/portfolios:/var/www/portfolios:rw
+    restart: unless-stopped

@@ -7,10 +7,10 @@ WORKDIR /app
 # Install pnpm
 RUN npm install -g pnpm
 
-# Copy lockfile (important!)
+# Copy lockfiles
 COPY package.json pnpm-lock.yaml ./
 
-# Install deps (reproducible)
+# Install deps
 RUN pnpm install --frozen-lockfile
 
 # ----------------------------
@@ -19,13 +19,13 @@ RUN pnpm install --frozen-lockfile
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Install pnpm again (each stage is isolated)
+# Install pnpm
 RUN npm install -g pnpm
 
-# Copy node_modules from deps
+# Copy node_modules
 COPY --from=deps /app/node_modules ./node_modules
 
-# Copy source code
+# Copy source
 COPY . .
 
 # Build Next.js
@@ -40,11 +40,17 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
 
-# Use non-root user
-RUN addgroup -S nodejs && adduser -S nextjs -G nodejs
+# Hardcode UID/GID for stability
+RUN addgroup -g 101 nodejs && adduser -u 100 -G nodejs -S nextjs
+
+# Make uploads folder
+RUN mkdir -p /var/www/portfolios \
+    && chown -R 100:101 /var/www/portfolios
+
+# Switch to non-root user
 USER nextjs
 
-# Copy standalone output
+# Copy standalone build
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public

@@ -34,6 +34,8 @@ export default function LoginPage() {
     }
   }
 
+  console.log("Env variables : ", process.env.DOMAIN);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
