@@ -4,7 +4,7 @@ services:
       context: ../
       dockerfile: docker/Dockerfile
     image: static-portfolio-builder:latest
-
+    container_name: portfolio-builder
     ports:
       - "3300:3000"
 
