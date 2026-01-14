@@ -98,12 +98,9 @@ export default function Upload({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8 flex flex-col md:flex-row gap-8">
+    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row gap-8">
       {/* Upload Form */}
       <div className="md:w-1/3 w-full bg-white rounded-xl shadow-lg p-6 flex flex-col gap-4">
-        <h1 className="text-xl font-bold text-gray-800 mb-4">
-          Upload Portfolio for {username}
-        </h1>
         <form onSubmit={handleUpload} className="flex flex-col gap-4">
           <label className="text-gray-700 font-medium">
             Select ZIP file <span className="text-red-500">*</span>
@@ -139,7 +136,7 @@ export default function Upload({
 
       {/* Live Preview */}
       <div className="md:w-2/3 w-full flex flex-col gap-2">
-        <h2 className="text-lg font-semibold text-gray-700 mb-2">
+        <h2 className="text-lg font-semibold text-gray-700 mb-2 mt-4">
           Live Preview
         </h2>
         <div className="w-full h-150 border rounded overflow-hidden shadow-md">

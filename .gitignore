@@ -38,7 +38,7 @@ yarn-error.log*
 !.env.sample
 
 mock-*
-src/data/users.json
+data
 
 # vercel
 .vercel
