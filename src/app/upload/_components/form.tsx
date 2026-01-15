@@ -135,9 +135,32 @@ export default function Upload({ url }: { url: string }) {
 
       {/* Right: Live Preview */}
       <div className="md:w-2/3 w-full flex flex-col gap-2 h-full">
-        <h2 className="text-lg font-semibold text-gray-700 mb-2 mt-4">
-          Live Preview
-        </h2>
+        <h2 className="text-lg font-semibold text-gray-700">Live Preview</h2>
+
+        {url && (
+          <div className="flex items-center gap-2 mt-2 md:mt-0">
+            {/* URL Link */}
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:text-blue-800 underline break-all"
+            >
+              {url}
+            </a>
+
+            {/* Copy Button */}
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(url);
+                alert("URL copied to clipboard!");
+              }}
+              className="bg-blue-500 hover:bg-blue-600 text-white mx-5 px-3 py-1 rounded transition"
+            >
+              Copy
+            </button>
+          </div>
+        )}
         <div className="w-full h-full border rounded overflow-hidden shadow-md flex">
           {loading ? (
             <div className="flex items-center justify-center w-full h-full text-gray-500">
