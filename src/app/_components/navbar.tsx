@@ -58,10 +58,7 @@ export default function Navbar() {
       );
     } else if (item.type === "username") {
       return (
-        <span
-          key={idx}
-          className="text-gray-500 font-semibold px-3 py-2"
-        >
+        <span key={idx} className="text-gray-500 font-semibold px-3 py-2">
           Hello, {item.name}
         </span>
       );
@@ -72,9 +69,9 @@ export default function Navbar() {
 
   return (
     <nav className="bg-white shadow-md fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo */}
+      <div className="px-4 sm:px-6 lg:px-2">
+        <div className="flex justify-between items-center h-16 px-4">
+          {/* Logo (Left) */}
           <div className="shrink-0">
             <Link
               href="/"
@@ -84,12 +81,12 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Menu */}
+          {/* Desktop Menu (Right) */}
           <div className="hidden md:flex items-center gap-2">
             {desktopMenu.map(renderItem)}
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button (Right) */}
           {mobileMenu.length > 0 && (
             <div className="md:hidden flex items-center">
               <button
