@@ -22,7 +22,6 @@ services:
 
     volumes:
       - /var/www/portfolios:/var/www/portfolios:rw
-      - ../data:/app/data:ro
 
     env_file:
       - ../.env.${ENV:-local}
