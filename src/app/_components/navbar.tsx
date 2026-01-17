@@ -29,6 +29,11 @@ export default function Navbar() {
     fetchSession();
   }, [path]);
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [path]);
+
   if (loading) return null;
 
   // Define menus
@@ -37,6 +42,7 @@ export default function Navbar() {
   if (username) {
     desktopMenu.push(
       { type: "link", name: "Upload", href: "/upload" },
+      { type: "link", name: "Setting", href: "/setting" },
       { type: "username", name: username },
       { type: "component", component: <Logout key="logout" /> }
     );
