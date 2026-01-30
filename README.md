@@ -73,8 +73,7 @@ This project is built on **Archivo**, a comprehensive platform designed specific
 | --------------------------- | ------------------------------------------------------------- |
 | **Secure Upload Pipeline**  | End-to-end encrypted file transfer with validation            |
 | **Automated Deployment**    | One-click deployment with automatic extraction                |
-| **Session Management**      | Robust authentication with secure session handling            |                 |
-| **Developer Experience**    | Clean APIs, comprehensive documentation, and easy integration |
+| **Session Management**      | Robust authentication with secure session handling            |
 
 Archivo's foundation ensures this builder delivers:
 
@@ -90,8 +89,44 @@ Archivo's foundation ensures this builder delivers:
 
 - Node.js 18+
 - Git
+- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/) (optional, for containerized setup)
 
-### Step-by-Step Installation
+---
+
+### Storage Setup: Local vs Production
+
+#### 1. Local Development (Mock Storage)
+
+During development, the application uses a mock storage directory named `mock-portfolios-storage` for portfolio uploads and extraction.
+
+```bash
+# Create mock storage directory
+mkdir -p mock-portfolios-storage
+
+# Optionally, create deployment subdirectory (example: johndoe.archivodevspace.com)
+mkdir -p mock-portfolios-storage/[profile].[domain]
+```
+
+#### 2. Production Server (Persistent Storage)
+
+In production, the application uses `/var/www/portfolios` for all uploaded/deployed portfolios (as configured in `docker/docker-compose.yaml`). You should ensure this directory exists and has the correct permissions before starting the server or container.
+
+```bash
+# On your production server or inside your production container:
+sudo mkdir -p /var/www/portfolios
+sudo chown $(whoami):$(whoami) /var/www/portfolios   # or set to the Docker user if inside a container
+```
+
+> **Note:**  
+> - For Docker deployments, `/var/www/portfolios` is mapped automatically as a persistent volume.
+> - You do **not** need to create `mock-portfolios-storage` in production – always use `/var/www/portfolios`.
+
+
+---
+
+## 🛠️ Full Setup Instructions
+
+### Step-by-Step: Common Setup
 
 ```bash
 # 1. Clone the repository
@@ -107,11 +142,11 @@ cp .env.sample .env.local
 # 4. Edit .env.local with your configuration
 # Add your session secret and other environment-specific values
 
-# 5. Create storage directory
+# 5. (Local/dev only) Create mock storage directory
 mkdir -p mock-portfolios-storage
 
-# 6. Create deployment subdirectory (example format: profile.domain => johndoe.archivodevspace.com)
-mkdir -p mock-portfolios-storage/[profile].[domain]
+# 6. (Production only) Create persistent storage directory
+# (Already covered in the section above)
 
 # 7. Create data directory for user management
 mkdir -p src/data
@@ -119,6 +154,44 @@ mkdir -p src/data
 # 8. Create users.json file with initial credentials
 echo '[{"username": "admin", "password": "secure_password"}]' > src/data/users.json
 ```
+
+---
+
+## 🐳 Docker & Docker Compose
+
+You can run the application using Docker Compose for easier deployment and environment parity.
+
+### Quickstart
+
+```bash
+# 1. Copy the environment file and edit as needed
+cp .env.sample .env.local
+
+# 2. (Recommended) Ensure portfolio directory exists for persistent volumes:
+sudo mkdir -p /var/www/portfolios
+sudo chown $(whoami):$(whoami) /var/www/portfolios
+
+# 3. Start the services using Docker Compose
+docker compose up --build
+```
+
+> **Note:**  
+> In Docker/production, all portfolio files are stored in `/var/www/portfolios`, which is mounted into the container.
+
+#### Useful Commands
+
+- Rebuild containers (after dependency or config changes):
+  ```bash
+  docker compose up --build
+  ```
+- Stop services:
+  ```bash
+  docker compose down
+  ```
+- View logs:
+  ```bash
+  docker compose logs -f
+  ```
 
 ---
 
