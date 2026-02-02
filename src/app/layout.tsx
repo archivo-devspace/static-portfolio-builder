@@ -3,6 +3,7 @@ import { Roboto, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./_components/navbar";
 import Footer from "./_components/footer";
+import FirstTimeInstructions from "./_components/first-time-instructions";
 
 // Google Fonts with variables
 const roboto = Roboto({ subsets: ["latin"], weight: ["400", "500", "700"], variable: "--font-roboto" });
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${roboto.variable} ${robotoMono.variable} bg-gray-50`}>
+        <FirstTimeInstructions />
         <Navbar />
         <main>{children}</main>
         <Footer />

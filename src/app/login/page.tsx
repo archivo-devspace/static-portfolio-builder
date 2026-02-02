@@ -38,6 +38,11 @@ export default function LoginPage() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow">
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">Sign in</h1>
+        <p className="text-sm text-gray-600 mb-6">
+          This page is for accessing your deployment portal. Enter your
+          username and password, then click Login to continue.
+        </p>
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
           <input
             type="text"

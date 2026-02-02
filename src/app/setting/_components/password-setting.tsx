@@ -47,6 +47,10 @@ export default function PasswordSetting() {
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
       <h1 className="text-2xl font-bold mb-4">Change Password</h1>
+      <p className="text-sm text-gray-600 mb-4">
+        This section lets you update your account password. Enter your current
+        password, choose a new one, confirm it, then submit to save changes.
+      </p>
 
       {message && (
         <p className={`mb-4 text-sm ${message.startsWith("✅") ? "text-green-600" : "text-red-600"}`}>

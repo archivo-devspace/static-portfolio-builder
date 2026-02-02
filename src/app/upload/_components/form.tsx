@@ -100,6 +100,13 @@ export default function Upload({ url }: { url: string }) {
     <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row gap-8">
       {/* Left: Upload Form */}
       <div className="md:w-1/3 w-full p-6 flex flex-col gap-4 h-full">
+        <div className="space-y-2">
+          <h2 className="text-lg font-semibold text-gray-800">Upload & Deploy</h2>
+          <p className="text-sm text-gray-600">
+            This section is for uploading your static site ZIP. Choose a ZIP
+            that contains an `index.html`, then click Deploy to publish it.
+          </p>
+        </div>
         <form onSubmit={handleUpload} className="flex flex-col gap-4 flex-1">
           <label className="text-gray-700 font-medium">
             Select ZIP file <span className="text-red-500">*</span>
@@ -136,6 +143,10 @@ export default function Upload({ url }: { url: string }) {
       {/* Right: Live Preview */}
       <div className="md:w-2/3 w-full flex flex-col gap-2 h-full">
         <h2 className="text-lg font-semibold text-gray-700">Live Preview</h2>
+        <p className="text-sm text-gray-600">
+          This preview shows your latest deployment. Use the link to open the
+          site in a new tab or copy it to share.
+        </p>
 
         {url && (
           <div className="flex items-center gap-2 mt-2 md:mt-0">
